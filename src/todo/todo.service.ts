@@ -1,4 +1,5 @@
 import {
+  Inject,
   Injectable,
   OnApplicationBootstrap,
   OnApplicationShutdown,
@@ -10,6 +11,7 @@ import { Todo } from './todo.entity';
 import { CreateTodo } from './dto/create-todo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Logger } from 'src/interfaces/logger.interface';
 
 @Injectable()
 export class TodoService
@@ -22,6 +24,8 @@ export class TodoService
   constructor(
     @InjectRepository(Todo)
     private readonly todoRepository: Repository<Todo>,
+    @Inject('LOGGER')
+    private readonly logger: Logger,
   ) {
     console.log('Service Constructor');
   }
@@ -49,6 +53,7 @@ export class TodoService
   //   }
 
   async getAll(): Promise<Todo[]> {
+    this.logger.log('Custom logger used for logging get all to-dos');
     return this.todoRepository.find();
   }
 
