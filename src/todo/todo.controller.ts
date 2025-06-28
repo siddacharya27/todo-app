@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -13,8 +14,10 @@ import { TodoService } from './todo.service';
 // import { Todo } from './todo.model';
 import { CreateTodo } from './dto/create-todo.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { LoggingInterceptor } from 'src/logger.interceptor';
 
 @ApiTags('todo')
+@UseInterceptors(LoggingInterceptor)
 @Controller('todo')
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
