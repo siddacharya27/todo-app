@@ -30,6 +30,8 @@ export class TodoService
     private readonly appName: string,
     @Inject('SimpleLogger')
     private slogger: { log: (msg: string) => void },
+    @Inject('RANDOM_TOKEN')
+    private readonly token: string,
   ) {
     console.log('Service Constructor');
   }
@@ -47,7 +49,9 @@ export class TodoService
   private idCounter = 1;
 
   onModuleInit() {
-    console.log(`Todo service initiated for ${this.getAppName()}`);
+    console.log(
+      `Todo service initiated for ${this.token} ${this.getAppName()}`,
+    );
   }
 
   getAppName(): string {

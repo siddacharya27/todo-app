@@ -14,6 +14,10 @@ import { APP_NAME, simpleLogger } from './constants';
     { provide: 'LOGGER', useClass: CustomLogger },
     { provide: 'APP_NAME', useValue: APP_NAME },
     { provide: 'SimpleLogger', useValue: simpleLogger },
+    {
+      provide: 'RANDOM_TOKEN',
+      useFactory: () => Math.random().toString(36).substring(2),
+    },
   ],
 })
 export class TodoModule {}
