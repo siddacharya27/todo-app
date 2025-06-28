@@ -26,6 +26,10 @@ export class TodoService
     private readonly todoRepository: Repository<Todo>,
     @Inject('LOGGER')
     private readonly logger: Logger,
+    @Inject('APP_NAME')
+    private readonly appName: string,
+    @Inject('SimpleLogger')
+    private slogger: { log: (msg: string) => void },
   ) {
     console.log('Service Constructor');
   }
@@ -43,7 +47,12 @@ export class TodoService
   private idCounter = 1;
 
   onModuleInit() {
-    console.log('Todo service initiated');
+    console.log(`Todo service initiated for ${this.getAppName()}`);
+  }
+
+  getAppName(): string {
+    this.slogger.log('Getting App Name from Constants!');
+    return this.appName;
   }
 
   //  For In memory implementation
