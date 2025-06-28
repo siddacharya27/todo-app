@@ -1,4 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  OnApplicationBootstrap,
+  OnApplicationShutdown,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common';
 // import { Todo } from './todo.model';
 import { Todo } from './todo.entity';
 import { CreateTodo } from './dto/create-todo.dto';
@@ -6,14 +12,35 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class TodoService {
+export class TodoService
+  implements
+    OnModuleInit,
+    OnApplicationBootstrap,
+    OnModuleDestroy,
+    OnApplicationShutdown
+{
   constructor(
     @InjectRepository(Todo)
     private readonly todoRepository: Repository<Todo>,
-  ) {}
+  ) {
+    console.log('Service Constructor');
+  }
+  onApplicationShutdown(signal?: string) {
+    console.log('Todo app shutdown!');
+  }
+  onModuleDestroy() {
+    console.log('Todo service destroyed');
+  }
+  onApplicationBootstrap() {
+    console.log('Todo app bootstrapped!');
+  }
 
   private todos: Todo[] = [];
   private idCounter = 1;
+
+  onModuleInit() {
+    console.log('Todo service initiated');
+  }
 
   //  For In memory implementation
   //   getAll(): Todo[] {
