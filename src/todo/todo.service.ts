@@ -1,6 +1,7 @@
 import {
   Inject,
   Injectable,
+  NotFoundException,
   OnApplicationBootstrap,
   OnApplicationShutdown,
   OnModuleDestroy,
@@ -68,6 +69,14 @@ export class TodoService
   async getAll(): Promise<Todo[]> {
     this.logger.log('Custom logger used for logging get all to-dos');
     return this.todoRepository.find();
+  }
+
+  async getById(id: number): Promise<Todo> {
+    const todo = await this.todoRepository.findOneById(id);
+    if (!todo) {
+      throw new NotFoundException(`Todo with id ${id} not found.`);
+    }
+    return todo;
   }
 
   //  For In memory implementation

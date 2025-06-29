@@ -27,6 +27,11 @@ export class TodoController {
     return this.todoService.getAll();
   }
 
+  @Get(':id')
+  async getTodoById(@Param('id') id: number) {
+    return this.todoService.getById(id);
+  }
+
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async addTodo(@Body() createTodo: CreateTodo) {
