@@ -13,6 +13,7 @@ import { CreateTodo } from './dto/create-todo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Logger } from 'src/interfaces/logger.interface';
+import { InvalidIdException } from 'src/exceptions/invalid-id.exception';
 
 @Injectable()
 export class TodoService
@@ -74,7 +75,8 @@ export class TodoService
   async getById(id: number): Promise<Todo> {
     const todo = await this.todoRepository.findOneById(id);
     if (!todo) {
-      throw new NotFoundException(`Todo with id ${id} not found.`);
+      // throw new NotFoundException(`Todo with id ${id} not found.`); //Built-In Exception
+      throw new InvalidIdException(id); // Custom exception
     }
     return todo;
   }
