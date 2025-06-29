@@ -17,6 +17,7 @@ import { CreateTodo } from './dto/create-todo.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { LoggingInterceptor } from 'src/logger.interceptor';
 import { UppercasePipe } from 'src/pipes/uppercase.pipe';
+import { PositiveIntPipe } from 'src/pipes/positiveint.pipe';
 
 @ApiTags('todo')
 @UseInterceptors(LoggingInterceptor)
@@ -30,7 +31,7 @@ export class TodoController {
   }
 
   @Get(':id')
-  async getTodoById(@Param('id') id: number) {
+  async getTodoById(@Param('id', PositiveIntPipe) id: number) {
     return this.todoService.getById(id);
   }
 
