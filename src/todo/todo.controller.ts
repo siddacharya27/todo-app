@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UseInterceptors,
   UsePipes,
   ValidationPipe,
@@ -15,6 +16,7 @@ import { TodoService } from './todo.service';
 import { CreateTodo } from './dto/create-todo.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { LoggingInterceptor } from 'src/logger.interceptor';
+import { UppercasePipe } from 'src/pipes/uppercase.pipe';
 
 @ApiTags('todo')
 @UseInterceptors(LoggingInterceptor)
@@ -39,7 +41,11 @@ export class TodoController {
   }
 
   @Delete(':id')
-  async deleteTodo(@Param('id', ParseIntPipe) id: number) {
+  async deleteTodo(
+    @Param('id', ParseIntPipe) id: number,
+    @Query('q', UppercasePipe) query?: string,
+  ) {
+    if (query) console.log(`Query String Parsed ${query}`);
     const result = await this.todoService.deleteToDo(id);
     return { success: result };
   }
